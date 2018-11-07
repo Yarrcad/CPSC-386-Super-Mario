@@ -5,11 +5,12 @@ import spritesheet
 
 class Mario(Sprite):
 
-    def __init__(self, screen, solids, bricks):
+    def __init__(self, screen, solids, bricks, game):
         super().__init__()
         self.screen = screen
         self.solids = solids
         self.bricks = bricks
+        self.game = game
 
         ss = spritesheet.spritesheet('images/mario.png')
         self.rimages = ss.images_at(((97, 1, 15, 31), (114, 1, 15, 31), (131, 1, 16, 31)), colorkey=(146, 39, 143))
@@ -29,6 +30,7 @@ class Mario(Sprite):
         self.recent = None
 
     def update(self):
+        self.game.xmod = 0
         self.speed -= 1
         if self.speed == 0:
             self.index += 1
@@ -36,13 +38,16 @@ class Mario(Sprite):
                 self.index = 0
             self.image = pygame.transform.scale(self.rimages[self.index], (15 * 3, 31 * 3))
             self.speed = 8
-        self.rect.centerx += self.xvelo
+        if self.rect.centerx < 490 or self.xvelo < 0:
+            self.rect.centerx += self.xvelo
+        else:
+            self.game.modx = self.xvelo
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
-            if solid.rect.left >= self.rect.right:
+            if self.rect.centerx < solid.rect.centerx:
                 self.rect.right = solid.rect.left - 1
                 self.xvelo = 0
-            if solid.rect.right <= self.rect.left:
+            if self.rect.centerx > solid.rect.centerx:
                 self.rect.left = solid.rect.right + 1
                 self.xvelo = 0
         self.rect.centery -= self.yvelo
@@ -52,10 +57,10 @@ class Mario(Sprite):
             self.yvelo -= 2
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
-            if solid.rect.bottom <= self.rect.top:
+            if self.rect.centery > solid.rect.centery:
                 self.rect.top = solid.rect.bottom + 1
                 self.yvelo = 0
-            elif solid.rect.top <= self.rect.bottom:
+            elif self.rect.centery < solid.rect.centery:
                 self.rect.bottom = solid.rect.top - 1
                 self.grounded = True
                 self.yvelo = 0
