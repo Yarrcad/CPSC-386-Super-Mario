@@ -194,7 +194,11 @@ class Mario(Sprite):
             self.yvelo -= 2
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
-            if self.rect.centery > solid.rect.centery:
+            if self.rect.centerx > solid.rect.right and self.rect.bottom < solid.rect.top:
+                self.rect.left = solid.rect.right + 1
+            elif self.rect.centerx < solid.rect.left and self.rect.bottom < solid.rect.top:
+                self.rect.right = solid.rect.left - 1
+            elif self.rect.centery > solid.rect.centery:
                 self.rect.top = solid.rect.bottom + 1
                 self.yvelo = 0
             elif self.rect.centery < solid.rect.centery:
