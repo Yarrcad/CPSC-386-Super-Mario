@@ -17,9 +17,11 @@ class Brick(Sprite):
             ss = spritesheet.spritesheet('images/items.png')
             self.images = ss.load_strip((0, 80, 15, 15), 4)
             self.image = pygame.transform.scale(self.images[0], (15 * 3, 15 * 3))
-        self.image = pygame.Surface((15, 15)).convert()
         self.x = x
         self.y = y
         self.rect = self.image.get_rect()
         self.rect.left = x
         self.rect.top = y
+
+    def update(self, modx):
+        self.rect.centerx -= modx
