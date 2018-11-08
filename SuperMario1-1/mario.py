@@ -27,11 +27,11 @@ class Mario(Sprite):
 
         # Fire Mario
         self.frimages = ss.images_at(((97, 128, 17, 31), (114, 128, 17, 31), (131, 128, 16, 31)), colorkey=(146, 39, 143))
-        self.fsimage = ss.image_at((79, 128, 17, 31), colorkey=(255, 255, 143))
+        self.fsimage = ss.image_at((79, 128, 17, 31), colorkey=(146, 39, 143))
         self.fdimage = ss.image_at((181, 128, 17, 31), colorkey=(146, 39, 143))
         self.fjimage = ss.image_at((164, 128, 17, 31), colorkey=(146, 39, 143))
 
-        self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
+        self.image = pygame.transform.scale(self.simage, (17 * 3, 31 * 3))
         self.rect = self.image.get_rect()
         self.rect.bottom = 600
         self.ducking = False
@@ -42,8 +42,8 @@ class Mario(Sprite):
         self.yvelo = 0
         self.jumping = False
         self.recent = None
-        self.fire = False
-        self.norm = True
+        self.fire = True
+        self.norm = False
         self.superMario = False
         self.boosted = False
         self.pressed = False

@@ -20,6 +20,7 @@ class Level:
         # Ground
         self.solids.add(self.grouper(0 * 3, 200 * 3, 1103 * 3, 22 * 3))
         self.solids.add(self.grouper(1136 * 3, 200 * 3, 239 * 3, 22 * 3))
+        self.solids.add(self.grouper(1424 * 3, 200 * 3, 1023 * 3, 22 * 3))
         self.solids.add(self.grouper(2480 * 3, 200 * 3, 911 * 3, 22 * 3))
         # Small pipe
         self.solids.add(self.grouper(448 * 3, 168 * 3, 31 * 3, 32 * 3))
