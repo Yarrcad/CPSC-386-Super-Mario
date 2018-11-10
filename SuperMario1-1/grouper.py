@@ -14,3 +14,6 @@ class Grouper(Sprite):
         self.rect = self.image.get_rect()
         self.rect.left = x
         self.rect.top = y
+
+    def update(self, modx):
+        self.rect.centerx -= modx
