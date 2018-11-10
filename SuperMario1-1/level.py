@@ -6,11 +6,10 @@ from brick import Brick
 
 class Level:
 
-    def __init__(self, screen, solids, bricks, game):
+    def __init__(self, screen, solids, bricks):
         self.screen = screen
         self.grouper = Grouper
         self.brick = Brick
-        self.game = game
         self.bricks = bricks
         self.background = pygame.image.load('images/background.png')
         self.rect = self.background.get_rect()
@@ -18,17 +17,24 @@ class Level:
         self.rect = self.background.get_rect()
         self.solids = solids
         # Ground
+<<<<<<< HEAD
         self.solids.add(self.grouper(0 * 3, 200 * 3, 1103 * 3, 22 * 3))
         self.solids.add(self.grouper(1136 * 3, 200 * 3, 239 * 3, 22 * 3))
         self.solids.add(self.grouper(1424 * 3, 200 * 3, 1023 * 3, 22 * 3))
         self.solids.add(self.grouper(2480 * 3, 200 * 3, 911 * 3, 22 * 3))
+=======
+        solids.add(self.grouper(0 * 3, 200 * 3, 1103 * 3, 22 * 3))
+        solids.add(self.grouper(1136 * 3, 200 * 3, 239 * 3, 22 * 3))
+        solids.add(self.grouper(2480 * 3, 200 * 3, 911 * 3, 22 * 3))
+>>>>>>> origin/master
         # Small pipe
-        self.solids.add(self.grouper(448 * 3, 168 * 3, 31 * 3, 32 * 3))
-        self.solids.add(self.grouper(2608 * 3, 168 * 3, 31 * 3, 32 * 3))
-        self.solids.add(self.grouper(2864 * 3, 168 * 3, 31 * 3, 32 * 3))
+        solids.add(self.grouper(448 * 3, 168 * 3, 31 * 3, 32 * 3))
+        solids.add(self.grouper(2608 * 3, 168 * 3, 31 * 3, 32 * 3))
+        solids.add(self.grouper(2864 * 3, 168 * 3, 31 * 3, 32 * 3))
         # Med Pipe
-        self.solids.add(self.grouper(608 * 3, 152 * 3, 31 * 3, 48 * 3))
+        solids.add(self.grouper(608 * 3, 152 * 3, 31 * 3, 48 * 3))
         # Large Pipe
+<<<<<<< HEAD
         self.solids.add(self.grouper(736 * 3, 136 * 3, 31 * 3, 64 * 3))
         self.solids.add(self.grouper(912 * 3, 136 * 3, 31 * 3, 64 * 3))
         # Solid Bricks
@@ -57,6 +63,10 @@ class Level:
         self.solids.add(self.grouper((2896 + 16 * 6) * 3, (184 - 16 * 6) * 3, (16 * 3) * 3, 64 * 3))
         self.solids.add(self.grouper((2896 + 16 * 7) * 3, (184 - 16 * 7) * 3, (16 * 2) * 3, 64 * 3))
         self.solids.add(self.grouper(3168 * 3, 184 * 3, 16 * 3, 16 * 3))
+=======
+        solids.add(self.grouper(736 * 3, 136 * 3, 31 * 3, 64 * 3))
+        solids.add(self.grouper(912 * 3, 136 * 3, 31 * 3, 64 * 3))
+>>>>>>> origin/master
         # Regular Bricks
         self.bricks.add(self.brick(1280 * 3, 72 * 3, 1))
         self.bricks.add(self.brick((1280 + 16 * 1) * 3, 72 * 3, 1))
@@ -106,8 +116,3 @@ class Level:
     def blitme(self):
         self.screen.blit(self.background, self.rect)
         self.bricks.draw(self.screen)
-
-    def update(self):
-        self.solids.update(self.game.modx)
-        self.rect.centerx -= self.game.modx
-        self.bricks.update(self.game.modx)

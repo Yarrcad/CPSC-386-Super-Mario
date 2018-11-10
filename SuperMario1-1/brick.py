@@ -21,13 +21,20 @@ class Brick(Sprite):
             self.image = pygame.transform.scale(ss.image_at((1504, 136, 16, 16)), (16 * 3, 16 * 3))
         else:
             ss = spritesheet.spritesheet('images/items.png')
+<<<<<<< HEAD
             self.images = ss.load_strip((0, 80, 16, 16), 4)
             self.image = pygame.transform.scale(self.images[self.index], (16 * 3, 16 * 3))
+=======
+            self.images = ss.load_strip((0, 80, 15, 15), 4)
+            self.image = pygame.transform.scale(self.images[0], (15 * 3, 15 * 3))
+        self.image = pygame.Surface((15, 15)).convert()
+>>>>>>> origin/master
         self.x = x
         self.y = y
         self.rect = self.image.get_rect()
         self.rect.left = x
         self.rect.top = y
+<<<<<<< HEAD
 
     def update(self, modx):
         if self.type != 1 and self.active and self.type != 2:
@@ -52,3 +59,5 @@ class Brick(Sprite):
             else:
                 self.counter = 0
                 self.bumped = False
+=======
+>>>>>>> origin/master

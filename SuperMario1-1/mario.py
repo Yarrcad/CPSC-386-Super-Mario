@@ -6,22 +6,22 @@ from pygame.sprite import Group
 
 class Mario(Sprite):
 
-    def __init__(self, screen, solids, bricks, game):
+    def __init__(self, screen, solids, bricks):
         super().__init__()
         self.screen = screen
         self.solids = solids
         self.bricks = bricks
+<<<<<<< HEAD
         self.game = game
         self.temp = Group()
         self.temp.add(self)
+=======
+>>>>>>> origin/master
 
         ss = spritesheet.spritesheet('images/mario.png')
-        # Super Mario
-        self.srimages = ss.images_at(((97, 1, 17, 31), (114, 1, 17, 31), (131, 1, 16, 31)), colorkey=(146, 39, 143))
-        self.ssimage = ss.image_at((79, 1, 17, 31), colorkey=(146, 39, 143))
-        self.sdimage = ss.image_at((181, 1, 17, 31), colorkey=(146, 39, 143))
-        self.sjimage = ss.image_at((164, 1, 17, 31), colorkey=(146, 39, 143))
+        self.rimages = ss.images_at(((97, 1, 15, 31), (114, 1, 15, 31), (131, 1, 16, 31)), colorkey=(146, 39, 143))
 
+<<<<<<< HEAD
         # Mario
         self.rimages = ss.images_at(((97, 33, 17, 17), (114, 33, 17, 17), (131, 33, 16, 17)), colorkey=(146, 39, 143))
         self.simage = ss.image_at((79, 33, 17, 17), colorkey=(146, 39, 143))
@@ -35,26 +35,28 @@ class Mario(Sprite):
         self.fjimage = ss.image_at((164, 128, 17, 31), colorkey=(146, 39, 143))
 
         self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
+=======
+        self.image = pygame.transform.scale(self.rimages[0], (15 * 3, 31 * 3))
+>>>>>>> origin/master
         self.rect = self.image.get_rect()
         self.rect.bottom = 600
         self.ducking = False
         self.grounded = True
         self.index = 0
+<<<<<<< HEAD
         self.speed = 4
+=======
+        self.speed = 8
+        self.xspeed = 8
+>>>>>>> origin/master
         self.xvelo = 0
         self.yvelo = 0
+        self.xp = False
         self.jumping = False
         self.recent = None
-        self.fire = False
-        self.norm = True
-        self.superMario = False
-        self.boosted = False
-        self.pressed = False
-        self.recent = None
-        self.maxs = 5
-        self.xvelot = 4
 
     def update(self):
+<<<<<<< HEAD
         if self.ducking and self.norm and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.dimage, (17 * 3, 17 * 3))
             self.index = 0
@@ -199,12 +201,22 @@ class Mario(Sprite):
             self.rect.centerx += self.xvelo
         elif self.rect.centerx < 490 or self.xvelo < 0:
             self.rect.centerx += self.xvelo
+=======
+        self.speed -= 1
+        if self.speed == 0:
+            self.index += 1
+            if self.index == len(self.rimages):
+                self.index = 0
+            self.image = pygame.transform.scale(self.rimages[self.index], (15 * 3, 31 * 3))
+            self.speed = 8
+        self.rect.centerx += self.xvelo
+>>>>>>> origin/master
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
-            if self.rect.centerx < solid.rect.centerx:
+            if solid.rect.left >= self.rect.right:
                 self.rect.right = solid.rect.left - 1
                 self.xvelo = 0
-            if self.rect.centerx > solid.rect.centerx:
+            if solid.rect.right <= self.rect.left:
                 self.rect.left = solid.rect.right + 1
                 self.xvelo = 0
         brick = pygame.sprite.spritecollideany(self, self.bricks)
@@ -222,10 +234,18 @@ class Mario(Sprite):
             self.jumping = False
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
-            if self.rect.centery > solid.rect.centery:
+<<<<<<< HEAD:SuperMario1-1 - Copy/mario.py
+            if self.rect.centerx > solid.rect.right and self.rect.bottom < solid.rect.top:
+                self.rect.left = solid.rect.right + 1
+            elif self.rect.centerx < solid.rect.left and self.rect.bottom < solid.rect.top:
+                self.rect.right = solid.rect.left - 1
+            elif self.rect.centery > solid.rect.centery:
+=======
+            if solid.rect.bottom <= self.rect.top:
+>>>>>>> d91a8e5aed99c79f76a09506118f8fcc28fe1b63:SuperMario1-1/mario.py
                 self.rect.top = solid.rect.bottom + 1
                 self.yvelo = 0
-            elif self.rect.centery < solid.rect.centery:
+            elif solid.rect.top <= self.rect.bottom:
                 self.rect.bottom = solid.rect.top - 1
                 self.grounded = True
                 self.yvelo = 0
@@ -253,6 +273,7 @@ class Mario(Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
             self.xvelo = 0
+<<<<<<< HEAD
         if (not self.pressed and self.xvelo > 0 or self.xvelo > self.maxs) and self.grounded:
             self.xvelot -= 1
             if self.xvelot == 0:
@@ -273,6 +294,16 @@ class Mario(Sprite):
             self.game.maxx = 3391 * 3 - 980
         else:
             self.game.modx = 0
+=======
+        if not self.xp:
+            self.xspeed -= 1
+            if self.xspeed == 0:
+                if self.xvelo > 0:
+                    self.xvelo -= 2
+                elif self.xvelo < 0:
+                    self.xvelo += 2
+                self.xspeed = 8
+>>>>>>> origin/master
 
 
     def blitme(self):
