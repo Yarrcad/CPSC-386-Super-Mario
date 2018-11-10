@@ -8,19 +8,14 @@ class Brick(Sprite):
     def __init__(self, x, y, type):
         super().__init__()
 
-        # 1 = normal; 2 = brick coin 3 = coin; 4 = fire flower; 5 = mushroom 6 = star;
-        self.bumped = False
-        self.counter = 0
-        self.icounter = 4
-        self.active = True
-        self.index = 0
+        # 1 = normal; 2 = coin; 3 = fire flower; 4 = mushroom;
         self.type = type
-        self.cvalue = 0
-        if self.type == 1 or self.type == 2:
-            ss = spritesheet.spritesheet('images/1-1.png')
-            self.image = pygame.transform.scale(ss.image_at((1504, 136, 16, 16)), (16 * 3, 16 * 3))
+        if self.type == 1:
+            ss = spritesheet.spritesheet('images/items.png')
+            self.image = pygame.transform.scale(ss.image_at((0, 80, 15, 15)), (15 * 3, 15 * 3))
         else:
             ss = spritesheet.spritesheet('images/items.png')
+<<<<<<< HEAD
 <<<<<<< HEAD
             self.images = ss.load_strip((0, 80, 16, 16), 4)
             self.image = pygame.transform.scale(self.images[self.index], (16 * 3, 16 * 3))
@@ -29,6 +24,10 @@ class Brick(Sprite):
             self.image = pygame.transform.scale(self.images[0], (15 * 3, 15 * 3))
         self.image = pygame.Surface((15, 15)).convert()
 >>>>>>> origin/master
+=======
+            self.images = ss.load_strip((0, 80, 15, 15), 4)
+            self.image = pygame.transform.scale(self.images[0], (15 * 3, 15 * 3))
+>>>>>>> parent of a408614... update
         self.x = x
         self.y = y
         self.rect = self.image.get_rect()
@@ -37,6 +36,7 @@ class Brick(Sprite):
 <<<<<<< HEAD
 
     def update(self, modx):
+<<<<<<< HEAD
         if self.type != 1 and self.active and self.type != 2:
             self.icounter -= 1
             if self.icounter <= 0:
@@ -61,3 +61,6 @@ class Brick(Sprite):
                 self.bumped = False
 =======
 >>>>>>> origin/master
+=======
+        self.rect.centerx -= modx
+>>>>>>> parent of a408614... update

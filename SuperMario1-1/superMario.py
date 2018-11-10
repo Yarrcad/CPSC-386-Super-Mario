@@ -14,9 +14,12 @@ class Game:
 
 <<<<<<< HEAD
         self.modx = 0
+<<<<<<< HEAD
         self.maxx = 0
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of a408614... update
         self.solids = Group()
         self.bricks = Group()
         self.level = Level(self.screen, self.solids, self.bricks)
