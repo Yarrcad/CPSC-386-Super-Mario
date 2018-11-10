@@ -14,6 +14,7 @@ class Game:
         pygame.display.set_caption("Super Mario")
 
         self.modx = 0
+        self.maxx = 0
         self.solids = Group()
         self.bricks = Group()
         self.level = Level(self.screen, self.solids, self.bricks, self)
