@@ -6,9 +6,13 @@ from brick import Brick
 
 class Level:
 
-    def __init__(self, screen, solids, bricks, game):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers):
+        self.coins = coins
+        self.mushrooms = muushrooms
+        self.fflowers = fflowers
         self.screen = screen
         self.grouper = Grouper
+        self.scoreboard = scoreboard
         self.brick = Brick
         self.game = game
         self.bricks = bricks
@@ -105,9 +109,15 @@ class Level:
 
     def blitme(self):
         self.screen.blit(self.background, self.rect)
+        self.coins.draw(self.screen)
+        self.mushrooms.draw(self.screen)
+        self.fflowers.draw(self.screen)
         self.bricks.draw(self.screen)
 
     def update(self):
         self.solids.update(self.game.modx)
         self.rect.centerx -= self.game.modx
         self.bricks.update(self.game.modx)
+        self.coins.update(self.game.modx)
+        self.mushrooms.update(self.game.modx)
+        self.fflowers.update(self.game.modx)

@@ -1,5 +1,6 @@
 import pygame
 import sys
+from fireball import Fireball
 
 
 def check_keydown_events(event, mario):
@@ -12,6 +13,9 @@ def check_keydown_events(event, mario):
     if event.key == pygame.K_w and mario.grounded and not mario.jumping:
         mario.jumping = True
         mario.grounded = False
+    if event.key == pygame.K_SPACE and mario.fire and mario.fcount < 3:
+        mario.game.fireballs.add(Fireball(mario, mario.solids, mario.bricks))
+        mario.fcount += 1
 
 def check_keyup_events(event, mario):
     if event.key == pygame.K_s and not mario.norm:

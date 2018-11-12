@@ -8,11 +8,13 @@ class Brick(Sprite):
     def __init__(self, x, y, type):
         super().__init__()
 
-        # 1 = normal; 2 = brick coin 3 = coin; 4 = fire flower; 5 = mushroom 6 = star;
+        # 1 = normal; 2 = brick coin 3 = coin; a5 = mushroom 6 = star;
         self.bumped = False
         self.counter = 0
         self.icounter = 4
         self.active = True
+        self.spent = False
+        self.animate = True
         self.index = 0
         self.type = type
         self.cvalue = 0
@@ -30,7 +32,7 @@ class Brick(Sprite):
         self.rect.top = y
 
     def update(self, modx):
-        if self.type != 1 and self.active and self.type != 2:
+        if self.type != 1 and self.animate and self.type != 2:
             self.icounter -= 1
             if self.icounter <= 0:
                 self.index += 1
@@ -43,7 +45,7 @@ class Brick(Sprite):
         self.rect.centerx -= modx
         if self.bumped:
             if self.type != 1 and self.type != 2:
-                self.active = False
+                self.animate = False
             self.counter += 1
             if self.counter <= 5:
                 self.rect.centery -= 2
