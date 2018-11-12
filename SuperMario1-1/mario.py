@@ -1,16 +1,29 @@
 import pygame
 from pygame.sprite import Sprite
 import spritesheet
+from pygame.sprite import Group
+from coin import Coin
+from fflower import Fflower
+from mushroom import Mushroom
 
 
 class Mario(Sprite):
 
-    def __init__(self, screen, solids, bricks, game):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers):
         super().__init__()
         self.screen = screen
+        self.coins = coins
+        self.flower = Fflower
+        self.mushrooms = muushrooms
+        self.mushroom = Mushroom
+        self.fflowers = fflowers
+        self.coin = Coin
         self.solids = solids
+        self.scoreboard = scoreboard
         self.bricks = bricks
         self.game = game
+        self.temp = Group()
+        self.temp.add(self)
 
         ss = spritesheet.spritesheet('images/mario.png')
         # Super Mario
@@ -18,18 +31,22 @@ class Mario(Sprite):
         self.ssimage = ss.image_at((79, 1, 17, 31), colorkey=(146, 39, 143))
         self.sdimage = ss.image_at((181, 1, 17, 31), colorkey=(146, 39, 143))
         self.sjimage = ss.image_at((164, 1, 17, 31), colorkey=(146, 39, 143))
+        self.stimage = ss.image_at((147, 1, 17, 31), colorkey=(146, 39, 143))
 
         # Mario
         self.rimages = ss.images_at(((97, 33, 17, 17), (114, 33, 17, 17), (131, 33, 16, 17)), colorkey=(146, 39, 143))
         self.simage = ss.image_at((79, 33, 17, 17), colorkey=(146, 39, 143))
         self.dimage = ss.image_at((181, 33, 17, 17), colorkey=(146, 39, 143))
         self.jimage = ss.image_at((164, 33, 17, 17), colorkey=(146, 39, 143))
+        self.timage = ss.image_at((147, 33, 17, 17), colorkey=(146, 39, 143))
 
         # Fire Mario
-        self.frimages = ss.images_at(((97, 128, 17, 31), (114, 128, 17, 31), (131, 128, 16, 31)), colorkey=(146, 39, 143))
-        self.fsimage = ss.image_at((79, 128, 17, 31), colorkey=(255, 255, 143))
+        self.frimages = ss.images_at(((97, 128, 17, 31), (114, 128, 17, 31), (131, 128, 16, 31)),
+                                     colorkey=(146, 39, 143))
+        self.fsimage = ss.image_at((79, 128, 17, 31), colorkey=(146, 39, 143))
         self.fdimage = ss.image_at((181, 128, 17, 31), colorkey=(146, 39, 143))
         self.fjimage = ss.image_at((164, 128, 17, 31), colorkey=(146, 39, 143))
+        self.ftimage = ss.image_at((147, 128, 17, 31), colorkey=(146, 39, 143))
 
         self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
         self.rect = self.image.get_rect()
@@ -37,7 +54,7 @@ class Mario(Sprite):
         self.ducking = False
         self.grounded = True
         self.index = 0
-        self.speed = 8
+        self.speed = 4
         self.xvelo = 0
         self.yvelo = 0
         self.jumping = False
@@ -50,135 +67,174 @@ class Mario(Sprite):
         self.recent = None
         self.maxs = 5
         self.xvelot = 4
+        self.fcount = 0
 
     def update(self):
         if self.ducking and self.norm and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.dimage, (17 * 3, 17 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.ducking and self.norm and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.dimage, (17 * 3, 17 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif not self.grounded and self.norm and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.jimage, (17 * 3, 17 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif not self.grounded and self.norm and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.jimage, (17 * 3, 17 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo == 0 and self.norm and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo == 0 and self.norm and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.simage, (17 * 3, 17 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo > 0 and self.norm:
-            self.speed -= 1
-            if self.speed <= 0:
-                self.index += 1
-                if self.index == len(self.rimages):
-                    self.index = 0
-                self.image = pygame.transform.scale(self.rimages[self.index], (17 * 3, 17 * 3))
-                self.speed = 8
+            if self.recent == 'a':
+                self.image = pygame.transform.flip(pygame.transform.scale(self.timage, (17 * 3, 17 * 3)), True, False)
+            else:
+                self.speed -= 1
+                if self.speed <= 0:
+                    self.index += 1
+                    if self.index == len(self.rimages):
+                        self.index = 0
+                    self.image = pygame.transform.scale(self.rimages[self.index], (17 * 3, 17 * 3))
+                    if self.xvelo > 6 or self.xvelo < -6:
+                        self.speed = 2
+                    else:
+                        self.speed = 4
         elif self.xvelo < 0 and self.norm:
-            self.speed -= 1
-            if self.speed <= 0:
-                self.index += 1
-                if self.index == len(self.rimages):
-                    self.index = 0
-                self.image = pygame.transform.flip(pygame.transform.scale(self.rimages[self.index], (17 * 3, 17 * 3)), True, False)
-                self.speed = 8
-        
+            if self.recent == 'd':
+                self.image = pygame.transform.scale(self.timage, (17 * 3, 17 * 3))
+            else:
+                self.speed -= 1
+                if self.speed <= 0:
+                    self.index += 1
+                    if self.index == len(self.rimages):
+                        self.index = 0
+                    self.image = pygame.transform.flip(
+                        pygame.transform.scale(self.rimages[self.index], (17 * 3, 17 * 3)), True, False)
+                    if self.xvelo > 6 or self.xvelo < -6:
+                        self.speed = 2
+                    else:
+                        self.speed = 4
+
         if self.ducking and self.superMario and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.sdimage, (17 * 3, 31 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.ducking and self.superMario and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.sdimage, (17 * 3, 31 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif not self.grounded and self.superMario and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.sjimage, (17 * 3, 31 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif not self.grounded and self.superMario and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.sjimage, (17 * 3, 31 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo == 0 and self.superMario and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.ssimage, (17 * 3, 31 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo == 0 and self.superMario and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.ssimage, (17 * 3, 31 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo > 0 and self.superMario:
-            self.speed -= 1
-            if self.speed <= 0:
-                self.index += 1
-                if self.index == len(self.srimages):
-                    self.index = 0
-                self.image = pygame.transform.scale(self.srimages[self.index], (17 * 3, 31 * 3))
-                self.speed = 8
+            if self.recent == 'a':
+                self.image = pygame.transform.flip(pygame.transform.scale(self.stimage, (17 * 3, 31 * 3)), True, False)
+            else:
+                self.speed -= 1
+                if self.speed <= 0:
+                    self.index += 1
+                    if self.index == len(self.srimages):
+                        self.index = 0
+                    self.image = pygame.transform.scale(self.srimages[self.index], (17 * 3, 31 * 3))
+                    if self.xvelo > 6 or self.xvelo < -6:
+                        self.speed = 2
+                    else:
+                        self.speed = 4
         elif self.xvelo < 0 and self.superMario:
-            self.speed -= 1
-            if self.speed <= 0:
-                self.index += 1
-                if self.index == len(self.srimages):
-                    self.index = 0
-                self.image = pygame.transform.flip(pygame.transform.scale(self.srimages[self.index], (17 * 3, 31 * 3)), True, False)
-                self.speed = 8
-                
+            if self.recent == 'd':
+                self.image = pygame.transform.scale(self.stimage, (17 * 3, 31 * 3))
+            else:
+                self.speed -= 1
+                if self.speed <= 0:
+                    self.index += 1
+                    if self.index == len(self.srimages):
+                        self.index = 0
+                    self.image = pygame.transform.flip(
+                        pygame.transform.scale(self.srimages[self.index], (17 * 3, 31 * 3)), True, False)
+                    if self.xvelo > 6 or self.xvelo < -6:
+                        self.speed = 2
+                    else:
+                        self.speed = 4
+
         if self.ducking and self.fire and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.fdimage, (17 * 3, 31 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.ducking and self.fire and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.fdimage, (17 * 3, 31 * 3)), True, False)
             self.index = 0
-            self.speed = 8
-        elif not self.grounded and self.fire  and (self.recent == None or self.recent == 'd'):
+            self.speed = 4
+        elif not self.grounded and self.fire and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.fjimage, (17 * 3, 31 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif not self.grounded and self.fire and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.fjimage, (17 * 3, 31 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo == 0 and self.fire and (self.recent == None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.fsimage, (17 * 3, 31 * 3))
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo == 0 and self.fire and self.recent == 'a':
             self.image = pygame.transform.flip(pygame.transform.scale(self.fsimage, (17 * 3, 31 * 3)), True, False)
             self.index = 0
-            self.speed = 8
+            self.speed = 4
         elif self.xvelo > 0 and self.fire:
-            self.speed -= 1
-            if self.speed <= 0:
-                self.index += 1
-                if self.index == len(self.frimages):
-                    self.index = 0
-                self.image = pygame.transform.scale(self.frimages[self.index], (17 * 3, 31 * 3))
-                self.speed = 8
+            if self.recent == 'a':
+                self.image = pygame.transform.flip(pygame.transform.scale(self.ftimage, (17 * 3, 31 * 3)), True, False)
+            else:
+                self.speed -= 1
+                if self.speed <= 0:
+                    self.index += 1
+                    if self.index == len(self.frimages):
+                        self.index = 0
+                    self.image = pygame.transform.scale(self.frimages[self.index], (17 * 3, 31 * 3))
+                    if self.xvelo > 6 or self.xvelo < -6:
+                        self.speed = 2
+                    else:
+                        self.speed = 4
         elif self.xvelo < 0 and self.fire:
-            self.speed -= 1
-            if self.speed <= 0:
-                self.index += 1
-                if self.index == len(self.frimages):
-                    self.index = 0
-                self.image = pygame.transform.flip(pygame.transform.scale(self.frimages[self.index], (17 * 3, 31 * 3)), True, False)
-                self.speed = 8
-
-        if self.rect.centerx < 490 or self.xvelo < 0:
+            if self.recent == 'd':
+                self.image = pygame.transform.scale(self.ftimage, (17 * 3, 31 * 3))
+            else:
+                self.speed -= 1
+                if self.speed <= 0:
+                    self.index += 1
+                    if self.index == len(self.frimages):
+                        self.index = 0
+                    self.image = pygame.transform.flip(
+                        pygame.transform.scale(self.frimages[self.index], (17 * 3, 31 * 3)), True, False)
+                    if self.xvelo > 6 or self.xvelo < -6:
+                        self.speed = 2
+                    else:
+                        self.speed = 4
+        if self.game.maxx >= 3391 * 3 - 980:
             self.rect.centerx += self.xvelo
-        else:
-            self.game.modx = self.xvelo
+        elif self.rect.centerx < 490 or self.xvelo < 0:
+            self.rect.centerx += self.xvelo
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
             if self.rect.centerx < solid.rect.centerx:
@@ -187,21 +243,106 @@ class Mario(Sprite):
             if self.rect.centerx > solid.rect.centerx:
                 self.rect.left = solid.rect.right + 1
                 self.xvelo = 0
+        brick = pygame.sprite.spritecollideany(self, self.bricks)
+        if brick:
+            if self.rect.centerx < brick.rect.centerx:
+                self.rect.right = brick.rect.left - 1
+                self.xvelo = 0
+            if self.rect.centerx > brick.rect.centerx:
+                self.rect.left = brick.rect.right + 1
+                self.xvelo = 0
+        if not self.jumping:
+            self.yvelo -= 2
         self.rect.centery -= self.yvelo
         if self.yvelo >= 19:
             self.jumping = False
-        if not self.jumping:
-            self.yvelo -= 2
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
+            if self.jumping:
+                self.jumping = False
             if self.rect.centery > solid.rect.centery:
                 self.rect.top = solid.rect.bottom + 1
                 self.yvelo = 0
             elif self.rect.centery < solid.rect.centery:
                 self.rect.bottom = solid.rect.top - 1
                 self.grounded = True
-                self.speed = 0
                 self.yvelo = 0
+        else:
+            self.grounded = False
+        tbricks = pygame.sprite.groupcollide(self.bricks, self.temp, False, False)
+        brick = pygame.sprite.spritecollideany(self, self.bricks)
+        if brick:
+            if self.jumping:
+                self.jumping = False
+            if self.rect.centery > brick.rect.centery:
+                self.rect.top = brick.rect.bottom + 1
+                self.yvelo = 0
+            elif self.rect.centery < brick.rect.centery:
+                self.rect.bottom = brick.rect.top - 1
+                self.grounded = True
+                self.yvelo = 0
+        if len(tbricks) > 1:
+            for tbrick in tbricks:
+                if tbrick.active and abs(
+                        self.rect.centerx - tbrick.rect.centerx) <= 8 * 3 and self.rect.centery > tbrick.rect.centery:
+                    if not self.norm and (tbrick.type == 1 or tbrick.type == 2):
+                        tbrick.active = False
+                    elif tbrick.spent == False:
+                        if tbrick.type == 3:
+                            self.coins.add(self.coin(tbrick, 2))
+                            self.scoreboard.coins += 1
+                            tbrick.spent = True
+                        elif tbrick.type == 5 and not self.norm:
+                            self.fflowers.add(self.flower(tbrick))
+                            tbrick.spent = True
+                        elif tbrick.type == 5:
+                            self.mushrooms.add(self.mushroom(tbrick, self.bricks, self.solids))
+                            tbrick.spent = True
+                    tbrick.bumped = True
+
+        else:
+            for tbrick in tbricks:
+                if tbrick.active and self.rect.centery > tbrick.rect.centery:
+                    tbrick.bumped = True
+                    if not self.norm and (tbrick.type == 1 or tbrick.type == 2):
+                        tbrick.active = False
+                    elif tbrick.spent == False:
+                        if tbrick.type == 3:
+                            self.coins.add(self.coin(tbrick, 2))
+                            self.scoreboard.coins += 1
+                            tbrick.spent = True
+                        elif tbrick.type == 5 and not self.norm:
+                            self.fflowers.add(self.flower(tbrick))
+                            tbrick.spent = True
+                        elif tbrick.type == 5:
+                            self.mushrooms.add(self.mushroom(tbrick, self.bricks, self.solids))
+                            tbrick.spent = True
+        fflower = pygame.sprite.spritecollideany(self, self.fflowers)
+        if fflower:
+            self.norm = False
+            self.superMario = False
+            self.fire = True
+            fflower.active = False
+            self.rect.centery -= 8 * 3
+            self.image = pygame.transform.scale(self.simage, (17 * 3, 31 * 3))
+            x = self.rect.centerx
+            y = self.rect.centery
+            self.rect = self.image.get_rect()
+            self.rect.centerx = x
+            self.rect.centery = y
+        mushroom = pygame.sprite.spritecollideany(self, self.mushrooms)
+        if mushroom:
+            self.norm = False
+            self.superMario = True
+            mushroom.active = False
+            self.rect.centery -= 8 * 3
+            self.image = pygame.transform.scale(self.simage, (17 * 3, 31 * 3))
+            x = self.rect.centerx
+            y = self.rect.centery
+            self.rect = self.image.get_rect()
+            self.rect.centerx = x
+            self.rect.centery = y
+
         if self.rect.left < 0:
             self.rect.left = 0
             self.xvelo = 0
@@ -217,8 +358,12 @@ class Mario(Sprite):
                 self.xvelot = 2
         else:
             self.xvelot = 4
-        if self.rect.centerx >= 490 and self.xvelo > 0:
+        if self.rect.centerx >= 490 and self.xvelo > 0 and self.game.maxx < 3391 * 3 - 980:
             self.game.modx = self.xvelo
+            self.game.maxx += self.xvelo
+        elif self.game.maxx > 3391 * 3 - 980:
+            self.game.modx = 3391 * 3 - 980 - self.game.maxx
+            self.game.maxx = 3391 * 3 - 980
         else:
             self.game.modx = 0
 
