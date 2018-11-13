@@ -6,11 +6,13 @@ from coin import Coin
 from fflower import Fflower
 from mushroom import Mushroom
 
+
 class Mario(Sprite):
 
     def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, audio):
         super().__init__()
         self.screen = screen
+        self.screen_rect = screen.get_rect()
         self.coins = coins
         self.audio = audio
         self.flower = Fflower
@@ -307,6 +309,7 @@ class Mario(Sprite):
                     if not self.norm and (tbrick.type == 1 or tbrick.type == 2):
                         tbrick.active = False
                         self.audio.effects.play(self.audio.bsmash)
+                        self.scoreboard.score += 50
                     elif tbrick.spent == False:
                         if tbrick.type == 3:
                             self.coins.add(self.coin(tbrick, 2))
@@ -377,6 +380,10 @@ class Mario(Sprite):
             self.game.maxx = 3391 * 3 - 980
         else:
             self.game.modx = 0
-
+        if self.rect.bottom > 980:  # death from falling into pits
+            self.rect.bottom = 600
+            self.rect.x = self.screen_rect.left # I am having trouble putting mario back to the start
+            self.scoreboard.lives -= 1
+            self.audio.effects.play(self.audio.death)
     def blitme(self):
         self.screen.blit(self.image, self.rect)

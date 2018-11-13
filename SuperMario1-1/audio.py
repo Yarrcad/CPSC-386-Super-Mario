@@ -17,6 +17,7 @@ class Audio:
         self.piptrav = pygame.mixer.Sound("sounds/pipe_travel.wav")
         self.powerup = pygame.mixer.Sound("sounds/power_up.wav")
         self.jump = pygame.mixer.Sound("sounds/jump.wav")
+        self.death = pygame.mixer.Sound("sounds/mariodeath.wav")
 
 
     @staticmethod
