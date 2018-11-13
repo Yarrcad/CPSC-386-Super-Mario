@@ -3,7 +3,7 @@ import sys
 from fireball import Fireball
 
 
-def check_keydown_events(event, mario):
+def check_keydown_events(event, mario, audio):
     if event.key == pygame.K_s and not mario.norm:
         mario.ducking = True
     if event.key == pygame.K_d:
@@ -13,23 +13,28 @@ def check_keydown_events(event, mario):
     if event.key == pygame.K_w and mario.grounded and not mario.jumping:
         mario.jumping = True
         mario.grounded = False
+        audio.effects.play(audio.jump)
     if event.key == pygame.K_SPACE and mario.fire and mario.fcount < 3:
         mario.game.fireballs.add(Fireball(mario, mario.solids, mario.bricks))
         mario.fcount += 1
+        audio.effects.play(audio.fireball)
 
 def check_keyup_events(event, mario):
     if event.key == pygame.K_s and not mario.norm:
         mario.ducking = False
 
 
-def check_events(mario):
+def check_events(mario, audio, startup):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, mario)
+            check_keydown_events(event, mario, audio)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, mario)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_for_play(startup, mouse_x,mouse_y)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
         mario.maxs = 10
@@ -50,4 +55,9 @@ def check_events(mario):
                 mario.yvelo += 2
     else:
         mario.jumping = False
+
+def check_for_play(startup,mouse_x,mouse_y):
+    button_clicked=startup.playrect.collidepoint(mouse_x,mouse_y)
+    if button_clicked and startup.menu_active:
+        startup.menu_active=False
 

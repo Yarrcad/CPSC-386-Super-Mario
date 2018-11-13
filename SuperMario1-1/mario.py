@@ -8,10 +8,11 @@ from mushroom import Mushroom
 
 class Mario(Sprite):
 
-    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, audio):
         super().__init__()
         self.screen = screen
         self.coins = coins
+        self.audio = audio
         self.flower = Fflower
         self.mushrooms = muushrooms
         self.mushroom = Mushroom
@@ -281,16 +282,21 @@ class Mario(Sprite):
                 if tbrick.active and abs(self.rect.centerx - tbrick.rect.centerx) <= 8 * 3 and self.rect.centery > tbrick.rect.centery:
                     if not self.norm and (tbrick.type == 1 or tbrick.type == 2):
                         tbrick.active = False
+                        self.audio.effects.play(self.audio.bsmash)
                     elif tbrick.spent == False:
                         if tbrick.type == 3:
                             self.coins.add(self.coin(tbrick, 2))
                             self.scoreboard.coins += 1
+                            self.audio.effects.play(self.audio.coin)
+                            self.scoreboard.score += 200
                             tbrick.spent = True
                         elif tbrick.type == 5 and not self.norm:
                             self.fflowers.add(self.flower(tbrick))
+                            self.audio.effects.play(self.audio.itemapp)
                             tbrick.spent = True
                         elif tbrick.type == 5:
                             self.mushrooms.add(self.mushroom(tbrick, self.bricks, self.solids))
+                            self.audio.effects.play(self.audio.itemapp)
                             tbrick.spent = True
                     tbrick.bumped = True
 
@@ -300,19 +306,26 @@ class Mario(Sprite):
                     tbrick.bumped = True
                     if not self.norm and (tbrick.type == 1 or tbrick.type == 2):
                         tbrick.active = False
+                        self.audio.effects.play(self.audio.bsmash)
                     elif tbrick.spent == False:
                         if tbrick.type == 3:
                             self.coins.add(self.coin(tbrick, 2))
                             self.scoreboard.coins += 1
+                            self.audio.effects.play(self.audio.coin)
+                            self.scoreboard.score += 200
                             tbrick.spent = True
                         elif tbrick.type == 5 and not self.norm:
                             self.fflowers.add(self.flower(tbrick))
+                            self.audio.effects.play(self.audio.itemapp)
                             tbrick.spent = True
                         elif tbrick.type == 5:
                             self.mushrooms.add(self.mushroom(tbrick, self.bricks, self.solids))
+                            self.audio.effects.play(self.audio.itemapp)
                             tbrick.spent = True
         fflower = pygame.sprite.spritecollideany(self, self.fflowers)
         if fflower:
+            self.audio.effects.play(self.audio.powerup)
+            self.scoreboard.score += 1000
             self.norm = False
             self.superMario = False
             self.fire = True
@@ -326,6 +339,8 @@ class Mario(Sprite):
             self.rect.centery = y
         mushroom = pygame.sprite.spritecollideany(self, self.mushrooms)
         if mushroom:
+            self.audio.effects.play(self.audio.powerup)
+            self.scoreboard.score += 1000
             self.norm = False
             self.superMario = True
             mushroom.active = False
