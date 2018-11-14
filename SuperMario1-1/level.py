@@ -144,7 +144,7 @@ class Level:
         self.bricks.update(self.game.modx)
         self.coins.update(self.game.modx)
         self.mushrooms.update(self.game.modx)
-        self.fflowers.update(self.game.modx, self.game.maxx)
+        self.fflowers.update(self.game.modx)
         self.goombas.update(self.game.modx, self.game.maxx)
         self.koopas.update(self.game.modx, self.game.maxx)
 
