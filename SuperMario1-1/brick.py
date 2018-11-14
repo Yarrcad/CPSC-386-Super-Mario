@@ -5,7 +5,7 @@ import spritesheet
 
 class Brick(Sprite):
 
-    def __init__(self, x, y, type):
+    def __init__(self, x, y, type_):
         super().__init__()
 
         # 1 = normal; 2 = brick coin 3 = coin; a5 = mushroom 6 = star;
@@ -16,7 +16,7 @@ class Brick(Sprite):
         self.spent = False
         self.animate = True
         self.index = 0
-        self.type = type
+        self.type = type_
         self.cvalue = 0
         if self.type == 1 or self.type == 2:
             ss = spritesheet.spritesheet('images/1-1.png')

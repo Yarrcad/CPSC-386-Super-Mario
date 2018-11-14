@@ -1,12 +1,13 @@
 import pygame
 from grouper import Grouper
 from brick import Brick
-
+from goomba import Goomba
+from koopa import Koopa
 
 
 class Level:
 
-    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, goombas, koopas):
         self.coins = coins
         self.mushrooms = muushrooms
         self.fflowers = fflowers
@@ -21,6 +22,10 @@ class Level:
         self.background = pygame.transform.scale(self.background, (self.rect.right * 3, self.rect.bottom * 3))
         self.rect = self.background.get_rect()
         self.solids = solids
+        self.koopa = Koopa
+        self.koopas = koopas
+        self.goomba = Goomba
+        self.goombas = goombas
         # Ground
         self.solids.add(self.grouper(0 * 3, 200 * 3, 1103 * 3, 22 * 3))
         self.solids.add(self.grouper(1136 * 3, 200 * 3, 239 * 3, 22 * 3))
@@ -37,7 +42,7 @@ class Level:
         self.solids.add(self.grouper(912 * 3, 136 * 3, 31 * 3, 64 * 3))
         # Solid Bricks
         self.solids.add(self.grouper(2144 * 3, 184 * 3, 63 * 3, 64 * 3))
-        self.solids.add(self.grouper((2144 + 16 * 1) * 3, (184 - 16 * 1) * 3, (63 -16 * 1) * 3, 64 * 3))
+        self.solids.add(self.grouper((2144 + 16 * 1) * 3, (184 - 16 * 1) * 3, (63 - 16 * 1) * 3, 64 * 3))
         self.solids.add(self.grouper((2144 + 16 * 2) * 3, (184 - 16 * 2) * 3, (63 - 16 * 2) * 3, 64 * 3))
         self.solids.add(self.grouper((2144 + 16 * 3) * 3, (184 - 16 * 3) * 3, (63 - 16 * 3) * 3, 64 * 3))
         self.solids.add(self.grouper(2240 * 3, 184 * 3, 63 * 3, 64 * 3))
@@ -106,6 +111,10 @@ class Level:
         self.bricks.add(self.brick(1744 * 3, 136 * 3, 3))
         self.bricks.add(self.brick(1792 * 3, 136 * 3, 3))
         self.bricks.add(self.brick(2720 * 3, 136 * 3, 3))
+        #  Enemies
+        self.koopas.add(self.koopa(self.screen, 400))
+        self.koopas.add(self.koopa(self.screen, 1000))
+        self.goombas.add(self.goomba(self.screen, 600))
 
     def blitme(self):
         self.screen.blit(self.background, self.rect)
@@ -113,6 +122,10 @@ class Level:
         self.mushrooms.draw(self.screen)
         self.fflowers.draw(self.screen)
         self.bricks.draw(self.screen)
+        for koopa in self.koopas:
+            koopa.blit()
+        for goomba in self.goombas:
+            goomba.blit()
 
     def update(self):
         self.solids.update(self.game.modx)

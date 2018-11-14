@@ -6,6 +6,7 @@ from scoreboard import Scoreboard
 from startup_menu import Startup
 from pygame.sprite import Group
 from audio import Audio
+from enemies import Enemies
 
 
 class Game:
@@ -28,8 +29,12 @@ class Game:
         self.audio.play()
         self.bricks = Group()
         self.scoreboard = Scoreboard(self.screen)
-        self.level = Level(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms, self.fflowers)
-        self.mario = Mario(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms, self.fflowers, self.audio)
+        self.goombas = Group()
+        self.koopas = Group()
+        self.level = Level(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms,
+                           self.fflowers, self.goombas, self.koopas)
+        self.mario = Mario(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms,
+                           self.fflowers, self.audio)
 
     def play(self):
         while True:
@@ -58,7 +63,6 @@ class Game:
                     if not mushroom.active:
                         self.mushrooms.remove(mushroom)
 
-
     def update_screen(self):
         self.screen.fill(Game.BLACK)
         self.level.blitme()
@@ -68,6 +72,7 @@ class Game:
         if self.startup.menu_active:
             self.startup.blit()
         pygame.display.flip()
+
 
 game = Game()
 game.play()
