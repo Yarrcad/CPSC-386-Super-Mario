@@ -9,13 +9,14 @@ from mushroom import Mushroom
 
 class Mario(Sprite):
 
-    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, audio):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, audio, level, startup):
         super().__init__()
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.coins = coins
         self.audio = audio
         self.flower = Fflower
+        self.startup = startup
         self.mushrooms = muushrooms
         self.mushroom = Mushroom
         self.fflowers = fflowers
@@ -24,8 +25,11 @@ class Mario(Sprite):
         self.scoreboard = scoreboard
         self.bricks = bricks
         self.game = game
+        self.invuln = False
+        self.invulncounter = 24
         self.temp = Group()
         self.temp.add(self)
+        self.level = level
 
         ss = spritesheet.spritesheet('images/mario.png')
         # Super Mario
@@ -70,8 +74,14 @@ class Mario(Sprite):
         self.maxs = 5
         self.xvelot = 4
         self.fcount = 0
+        self.dead = False
 
     def update(self):
+        if self.invuln:
+            self.invulncounter -= 1
+            if self.invulncounter <= 0:
+                self.invulncounter = 24
+                self.invuln = False
         if self.ducking and self.norm and (self.recent is None or self.recent == 'd'):
             self.image = pygame.transform.scale(self.dimage, (17 * 3, 17 * 3))
             self.index = 0
@@ -237,6 +247,36 @@ class Mario(Sprite):
             self.rect.centerx += self.xvelo
         elif self.rect.centerx < 490 or self.xvelo < 0:
             self.rect.centerx += self.xvelo
+        goomba = pygame.sprite.spritecollideany(self, self.level.goombas)
+        if goomba and not goomba.squish and self.norm:
+            self.dead = True
+        elif goomba and not goomba.squish:
+            self.norm = True
+            self.fire = False
+            self.superMario = False
+            self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
+            x = self.rect.centerx
+            y = self.rect.centery
+            self.rect = self.image.get_rect()
+            self.rect.centerx = x
+            self.rect.centery = y
+            self.invuln = True
+            self.audio.effects.play(self.audio.piptrav)
+        koopa =  pygame.sprite.spritecollideany(self, self.level.koopas)
+        if koopa and not koopa.squish and self.norm:
+            self.dead = True
+        elif koopa and not koopa.squish:
+            self.norm = True
+            self.fire = False
+            self.superMario = False
+            self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
+            x = self.rect.centerx
+            y = self.rect.centery
+            self.rect = self.image.get_rect()
+            self.rect.centerx = x
+            self.rect.centery = y
+            self.invuln = True
+            self.audio.effects.play(self.audio.piptrav)
         solid = pygame.sprite.spritecollideany(self, self.solids)
         if solid:
             if self.rect.centerx < solid.rect.centerx:
@@ -359,7 +399,18 @@ class Mario(Sprite):
             self.rect = self.image.get_rect()
             self.rect.centerx = x
             self.rect.centery = y
-
+        goomba = pygame.sprite.spritecollideany(self, self.level.goombas)
+        if goomba and self.rect.bottom < goomba.rect.centery and not goomba.squish:
+            goomba.squish = True
+            goomba.delay = 8
+            goomba.rect.centery += 25
+            self.yvelo *= -1
+            self.audio.effects.play(self.audio.jumpkill)
+        koopa = pygame.sprite.spritecollideany(self, self.level.goombas)
+        if koopa and self.rect.bottom < koopa.rect.centery:
+            goomba.squished = True
+            goomba.delay = 8
+            self.yvelo *= -1
         if self.rect.left < 0:
             self.rect.left = 0
             self.xvelo = 0
@@ -384,10 +435,31 @@ class Mario(Sprite):
         else:
             self.game.modx = 0
         if self.rect.bottom > 980:  # death from falling into pits
-            self.rect.bottom = 600
-            self.rect.x = self.screen_rect.left  # I am having trouble putting mario back to the start
-            self.scoreboard.lives -= 1
-            self.audio.effects.play(self.audio.death)
+            self.dead = True
+        if self.dead and not self. invuln:
+            self.die()
+        elif self.invuln:
+            self.dead = False
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
+
+    def die(self):
+        self.rect.bottom = 600
+        self.rect.left = self.screen_rect.left  # I am having trouble putting mario back to the start
+        self.scoreboard.lives -= 1
+        self.audio.effects.play(self.audio.death)
+        self.game.modx = self.game.maxx * -1 + 12
+        self.game.maxx = 0
+        self.dead = False
+        self.level.populateenemies()
+        for brick in self.bricks:
+            brick.spent = False
+            brick.animate = True
+        self.fflowers.empty()
+        self.mushrooms.empty()
+        if self.scoreboard.lives == 0:
+            with open('hs.txt', 'a') as f:
+                f.write('\n' + str(self.scoreboard.score))
+            self.scoreboard.reset_stats()
+            self.startup.menu_active = True

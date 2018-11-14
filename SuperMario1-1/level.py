@@ -111,10 +111,22 @@ class Level:
         self.bricks.add(self.brick(1744 * 3, 136 * 3, 3))
         self.bricks.add(self.brick(1792 * 3, 136 * 3, 3))
         self.bricks.add(self.brick(2720 * 3, 136 * 3, 3))
-        #  Enemies
-        self.koopas.add(self.koopa(self.screen, 400))
-        self.koopas.add(self.koopa(self.screen, 1000))
-        self.goombas.add(self.goomba(self.screen, 600))
+        self.goombas.add(self.goomba(self.screen, 352, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 640, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 816, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 839, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1280, 79, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1312, 79, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1553, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1576, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1824, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1847, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1984, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2007, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2084, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2071, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2784, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2807, 200, self.solids, self.bricks))
 
     def blitme(self):
         self.screen.blit(self.background, self.rect)
@@ -122,10 +134,9 @@ class Level:
         self.mushrooms.draw(self.screen)
         self.fflowers.draw(self.screen)
         self.bricks.draw(self.screen)
-        for koopa in self.koopas:
-            koopa.blit()
-        for goomba in self.goombas:
-            goomba.blit()
+        self.koopas.draw(self.screen)
+        self.goombas.draw(self.screen)
+
 
     def update(self):
         self.solids.update(self.game.modx)
@@ -133,4 +144,27 @@ class Level:
         self.bricks.update(self.game.modx)
         self.coins.update(self.game.modx)
         self.mushrooms.update(self.game.modx)
-        self.fflowers.update(self.game.modx)
+        self.fflowers.update(self.game.modx, self.game.maxx)
+        self.goombas.update(self.game.modx, self.game.maxx)
+        self.koopas.update(self.game.modx, self.game.maxx)
+
+    def populateenemies(self):
+        #  Enemies
+        self.koopas.empty()
+        self.goombas.empty()
+        self.goombas.add(self.goomba(self.screen, 352, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 640, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 816, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 839, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1280, 79, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1312, 79, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1553, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1576, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1824, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1847, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 1984, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2007, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2084, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2071, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2784, 200, self.solids, self.bricks))
+        self.goombas.add(self.goomba(self.screen, 2807, 200, self.solids, self.bricks))

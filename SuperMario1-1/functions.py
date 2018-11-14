@@ -36,6 +36,7 @@ def check_events(mario, audio, startup):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             check_for_play(startup, mouse_x, mouse_y)
+            check_for_hs(startup, mouse_x, mouse_y)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
         mario.maxs = 10
@@ -62,3 +63,10 @@ def check_for_play(startup, mouse_x, mouse_y):
     button_clicked = startup.playrect.collidepoint(mouse_x, mouse_y)
     if button_clicked and startup.menu_active:
         startup.menu_active = False
+
+def check_for_hs(startup, mouse_x, mouse_y):
+    button_clicked = startup.score_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and startup.menu_active and not startup.hs_active:
+        startup.hs_active = True
+    elif button_clicked and startup.menu_active and startup.hs_active:
+        startup.hs_active = False

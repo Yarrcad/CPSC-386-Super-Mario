@@ -4,7 +4,7 @@ import spritesheet
 
 
 class Koopa(Sprite):
-    def __init__(self, screen, xpos):
+    def __init__(self, screen, xpos, ypos):
         super().__init__()
         self.screen = screen
         ss = spritesheet.spritesheet('images/enemies.png')
@@ -16,16 +16,15 @@ class Koopa(Sprite):
         self.koopashell2image = ss.image_at((330, 4, 16, 15), colorkey=(146, 39, 143))
         self.image = pygame.transform.scale(self.koopaleft2image, (17 * 3, 17 * 3))
         self.rect = self.image.get_rect()
-        self.rect.bottom = 600
-        self.rect.x = xpos
+        self.rect.bottom = ypos * 3
+        self.rect.x = xpos * 3
 
         self.collidewithsolids = False
 
-    def update(self, modx):
-        if self.collidewithsolids:
-            self.rect.x += modx
-        else:
-            self.rect.x -= modx
+    def update(self, modx, maxx):
+        self.rect.centerx -= modx
+        if self.rect.left <= maxx + 980:
+            self.active = True
 
     def blit(self):
         self.screen.blit(self.image, self.rect)
