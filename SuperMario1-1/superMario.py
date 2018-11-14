@@ -34,7 +34,7 @@ class Game:
         self.goombas = Group()
         self.koopas = Group()
         self.level = Level(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms,
-                           self.fflowers, self.goombas, self.koopas)
+                           self.fflowers, self.goombas, self.koopas, self.fireballs)
         self.mario = Mario(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms,
                            self.fflowers, self.audio, self.level, self.startup)
 

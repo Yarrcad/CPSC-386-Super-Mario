@@ -466,6 +466,8 @@ class Mario(Sprite):
         self.game.maxx = 0
         self.dead = False
         self.level.populateenemies()
+        self.level.update()
+        self.game.modx = 0
         for brick in self.bricks:
             brick.spent = False
             brick.animate = True
@@ -476,3 +478,14 @@ class Mario(Sprite):
                 f.write('\n' + str(self.scoreboard.score))
             self.scoreboard.reset_stats()
             self.startup.menu_active = True
+        if not self.norm:
+            self.norm = True
+            self.fire = False
+            self.superMario = False
+            self.image = pygame.transform.scale(self.simage, (17 * 3, 17 * 3))
+            x = self.rect.centerx
+            y = self.rect.centery
+            self.rect = self.image.get_rect()
+            self.rect.centerx = x
+            self.rect.centery = y
+

@@ -7,7 +7,8 @@ from koopa import Koopa
 
 class Level:
 
-    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, goombas, koopas):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, goombas, koopas, fireballs):
+        self.fireballs = fireballs
         self.coins = coins
         self.mushrooms = muushrooms
         self.fflowers = fflowers
@@ -147,6 +148,7 @@ class Level:
         self.fflowers.update(self.game.modx)
         self.goombas.update(self.game.modx, self.game.maxx)
         self.koopas.update(self.game.modx, self.game.maxx)
+        pygame.sprite.groupcollide(self.fireballs, self.goombas, True, True)
 
     def populateenemies(self):
         #  Enemies
