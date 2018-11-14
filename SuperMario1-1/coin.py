@@ -5,7 +5,7 @@ import spritesheet
 
 class Coin(Sprite):
 
-    def __init__(self, brick, type):
+    def __init__(self, brick, type_):
         super().__init__()
 
         # 1 = static; 2 = brick coin
@@ -14,7 +14,7 @@ class Coin(Sprite):
         self.icounter = 4
         self.active = True
         self.index = 0
-        self.type = type
+        self.type = type_
         self.stepcount = 10
         ss = spritesheet.spritesheet('images/items.png')
         self.bimages = ss.load_strip((0, 112, 16, 16), 4, (0, 0, 0))

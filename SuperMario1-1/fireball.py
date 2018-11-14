@@ -2,6 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 import spritesheet
 
+
 class Fireball(Sprite):
 
     def __init__(self, mario, solids, bricks):
@@ -11,9 +12,9 @@ class Fireball(Sprite):
         self.bricks = bricks
 
         ss = spritesheet.spritesheet('images/items.png')
-        self.mimages = ss.images_at(((96, 144, 7, 7), (104, 144, 7, 7), (96, 152, 7, 7), (104, 152, 7, 7)), colorkey=(0, 0, 0))
+        self.mimages = ss.images_at(((96, 144, 7, 7), (104, 144, 7, 7), (96, 152, 7, 7), (104, 152, 7, 7)),
+                                    colorkey=(0, 0, 0))
         self.dimages = ss.images_at(((97, 1, 17, 31), (114, 1, 17, 31), (131, 1, 16, 31)), colorkey=(146, 39, 143))
-
 
         if self.mario.recent == 'd':
             self.xvelo = 12

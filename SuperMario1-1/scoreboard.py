@@ -90,6 +90,7 @@ class Scoreboard:
         self.lives_krect.top = 20
         self.lives_vrect.left = 800
         self.lives_vrect.top = 40
+
     def blit(self):
         self.screen.blit(self.score_key, self.score_krect)
         self.screen.blit(self.score_val, self.score_vrect)

@@ -6,7 +6,7 @@ from scoreboard import Scoreboard
 from startup_menu import Startup
 from pygame.sprite import Group
 from audio import Audio
-from enemies import Enemies
+
 
 
 class Game:

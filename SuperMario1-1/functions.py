@@ -19,6 +19,7 @@ def check_keydown_events(event, mario, audio):
         mario.fcount += 1
         audio.effects.play(audio.fireball)
 
+
 def check_keyup_events(event, mario):
     if event.key == pygame.K_s and not mario.norm:
         mario.ducking = False
@@ -34,7 +35,7 @@ def check_events(mario, audio, startup):
             check_keyup_events(event, mario)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_for_play(startup, mouse_x,mouse_y)
+            check_for_play(startup, mouse_x, mouse_y)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
         mario.maxs = 10
@@ -51,13 +52,13 @@ def check_events(mario, audio, startup):
     else:
         mario.pressed = False
     if keys[pygame.K_w] and mario.jumping:
-            if mario.yvelo <= 19:
-                mario.yvelo += 2
+        if mario.yvelo <= 19:
+            mario.yvelo += 2
     else:
         mario.jumping = False
 
-def check_for_play(startup,mouse_x,mouse_y):
-    button_clicked=startup.playrect.collidepoint(mouse_x,mouse_y)
-    if button_clicked and startup.menu_active:
-        startup.menu_active=False
 
+def check_for_play(startup, mouse_x, mouse_y):
+    button_clicked = startup.playrect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and startup.menu_active:
+        startup.menu_active = False

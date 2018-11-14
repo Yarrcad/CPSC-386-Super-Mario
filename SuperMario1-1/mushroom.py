@@ -22,6 +22,7 @@ class Mushroom(Sprite):
         self.rect = self.image.get_rect()
         self.rect.left = self.brick.rect.left
         self.rect.top = self.brick.rect.top
+
     def update(self, modx):
         self.rect.centerx -= modx
         if self.index > 0:
@@ -36,7 +37,7 @@ class Mushroom(Sprite):
                 self.rect.right = solid.rect.left - 1
             if brick:
                 self.xvelo *= -1
-                self.rect.right = brick.rect.left -1
+                self.rect.right = brick.rect.left - 1
             self.rect.centery -= self.yvelo
             solid = pygame.sprite.spritecollideany(self, self.solids)
             brick = pygame.sprite.spritecollideany(self, self.bricks)

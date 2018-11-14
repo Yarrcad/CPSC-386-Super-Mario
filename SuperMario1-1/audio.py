@@ -19,7 +19,6 @@ class Audio:
         self.jump = pygame.mixer.Sound("sounds/jump.wav")
         self.death = pygame.mixer.Sound("sounds/mariodeath.wav")
 
-
     @staticmethod
     def play():
         # Play background music.

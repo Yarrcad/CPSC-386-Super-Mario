@@ -14,7 +14,7 @@ class spritesheet(object):
 
     # Load a specific image from a specific rectangle
     def image_at(self, rectangle, colorkey=None):
-        "Loads image from x,y,x+offset,y+offset"
+        """Loads image from x,y,x+offset,y+offset"""
         rect = pygame.Rect(rectangle)
         image = pygame.Surface(rect.size).convert()
         image.blit(self.sheet, (0, 0), rect)
@@ -31,7 +31,7 @@ class spritesheet(object):
 
     # Load a whole strip of images
     def load_strip(self, rect, image_count, colorkey=None):
-       # "Loads a strip of images and returns them as a list"
+        # "Loads a strip of images and returns them as a list"
         tups = [(rect[0] + rect[2] * x, rect[1], rect[2], rect[3])
                 for x in range(image_count)]
         return self.images_at(tups, colorkey)
