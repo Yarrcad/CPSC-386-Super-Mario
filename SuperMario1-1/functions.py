@@ -14,9 +14,8 @@ def check_keydown_events(event, mario, audio):
         mario.jumping = True
         mario.grounded = False
         audio.effects.play(audio.jump)
-    if event.key == pygame.K_SPACE and mario.fire and mario.fcount < 3:
+    if event.key == pygame.K_SPACE and mario.fire:
         mario.game.fireballs.add(Fireball(mario, mario.solids, mario.bricks))
-        mario.fcount += 1
         audio.effects.play(audio.fireball)
 
 

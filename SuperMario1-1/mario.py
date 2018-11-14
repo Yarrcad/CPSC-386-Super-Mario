@@ -73,15 +73,16 @@ class Mario(Sprite):
         self.recent = None
         self.maxs = 5
         self.xvelot = 4
-        self.fcount = 0
         self.dead = False
 
     def update(self):
         if self.rect.centerx + self.game.maxx >= 3175 * 3:
-            self.rect.centerx = self.rect.centerx + self.game.maxx
-            if self.rect.bottom > 184:
-                self.rect.centery += 1
-            self.rect.centery -= 1
+            if self.rect.bottom > 184 * 3:
+                self.rect.centery -= 1
+            if self.rect.bottom <= 184 * 3:
+                self.scoreboard.lives = 0
+                self.die()
+                self.startup.menu_active = True
             self.game.modx = 0
         else:
             if self.invuln:
@@ -261,7 +262,7 @@ class Mario(Sprite):
                 goomba.rect.centery += 25
                 self.yvelo *= -1
                 self.audio.effects.play(self.audio.jumpkill)
-            if goomba and not goomba.squish and self.norm:
+            elif goomba and not goomba.squish and self.norm:
                 self.dead = True
             elif goomba and not goomba.squish:
                 self.norm = True
@@ -461,19 +462,20 @@ class Mario(Sprite):
         self.rect.bottom = 600
         self.rect.left = self.screen_rect.left  # I am having trouble putting mario back to the start
         self.scoreboard.lives -= 1
-        self.audio.effects.play(self.audio.death)
+        if self.dead:
+            self.audio.effects.play(self.audio.death)
         self.game.modx = self.game.maxx * -1 + 12
         self.game.maxx = 0
         self.dead = False
-        self.level.populateenemies()
         self.level.update()
         self.game.modx = 0
+        self.level.populateenemies()
         for brick in self.bricks:
             brick.spent = False
             brick.animate = True
         self.fflowers.empty()
         self.mushrooms.empty()
-        if self.scoreboard.lives == 0:
+        if self.scoreboard.lives <= 0:
             with open('hs.txt', 'a') as f:
                 f.write('\n' + str(self.scoreboard.score))
             self.scoreboard.reset_stats()

@@ -34,7 +34,7 @@ class Game:
         self.goombas = Group()
         self.koopas = Group()
         self.level = Level(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms,
-                           self.fflowers, self.goombas, self.koopas, self.fireballs)
+                           self.fflowers, self.goombas, self.koopas, self.fireballs, self.audio)
         self.mario = Mario(self.screen, self.solids, self.bricks, self, self.scoreboard, self.coins, self.mushrooms,
                            self.fflowers, self.audio, self.level, self.startup)
 
@@ -51,7 +51,6 @@ class Game:
                 for fireball in self.fireballs:
                     if not fireball.active:
                         self.fireballs.remove(fireball)
-                        self.mario.fcount -= 1
                 for brick in self.bricks:
                     if not brick.active:
                         self.bricks.remove(brick)

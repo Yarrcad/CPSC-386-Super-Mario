@@ -5,11 +5,12 @@ import spritesheet
 
 class Brick(Sprite):
 
-    def __init__(self, x, y, type_):
+    def __init__(self, x, y, type_, screen):
         super().__init__()
 
         # 1 = normal; 2 = brick coin 3 = coin; a5 = mushroom 6 = star;
         self.bumped = False
+        self.screen = screen
         self.counter = 0
         self.icounter = 4
         self.active = True
@@ -54,3 +55,6 @@ class Brick(Sprite):
             else:
                 self.counter = 0
                 self.bumped = False
+
+    def blit(self):
+        self.screen.blit(self.image, self.rect)
