@@ -8,7 +8,8 @@ from coin import Coin
 
 class Level:
 
-    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, goombas, koopas, fireballs, audio):
+    def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, goombas, koopas,
+                 fireballs, audio):
         self.fireballs = fireballs
         self.coins = coins
         self.coin = Coin
@@ -151,7 +152,6 @@ class Level:
         self.koopas.draw(self.screen)
         for goomba in self.goombas:
             goomba.blit()
-
 
     def update(self):
         self.solids.update(self.game.modx)

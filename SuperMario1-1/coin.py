@@ -22,9 +22,9 @@ class Coin(Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = self.brick.rect.centerx
         self.rect.centery = self.brick.rect.centery
-        if x != None:
+        if x is not None:
             self.rect.centerx = x
-        if y != None:
+        if y is not None:
             self.rect.centery = y
 
     def update(self, modx):

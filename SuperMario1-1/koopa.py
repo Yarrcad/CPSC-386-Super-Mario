@@ -18,6 +18,7 @@ class Koopa(Sprite):
         self.rect = self.image.get_rect()
         self.rect.bottom = ypos * 3
         self.rect.x = xpos * 3
+        self.active = False
 
         self.collidewithsolids = False
 

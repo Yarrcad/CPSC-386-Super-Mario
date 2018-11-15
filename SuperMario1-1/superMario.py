@@ -9,7 +9,6 @@ from button import Button
 from audio import Audio
 
 
-
 class Game:
     BLACK = (0, 0, 0)
 

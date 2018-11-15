@@ -17,6 +17,7 @@ class Fflower(Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = self.brick.rect.centerx
         self.rect.centery = self.brick.rect.centery
+
     def update(self, modx):
         self.rect.centerx -= modx
         if self.index > 0:

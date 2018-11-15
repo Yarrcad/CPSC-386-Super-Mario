@@ -24,6 +24,7 @@ class Startup:
 
         self.playrect.center = self.screen_rect.center
         self.playrect.y = 471
+        self.fontb = pygame.font.Font(None, 72)
 
     def blit(self):
         if not self.hs_active:
@@ -33,12 +34,13 @@ class Startup:
             fonta = pygame.font.Font(None, 72)
             texta = fonta.render("ALL-TIME", 1, (255, 255, 255))
             widtha, heighta = fonta.size("ALL-TIME")
-            recta = pygame.Rect(self.screen.get_width() / 2 - widtha / 2, self.screen.get_height() / 20, widtha, heighta)
+            recta = pygame.Rect(self.screen.get_width() / 2 - widtha / 2, self.screen.get_height() / 20,
+                                widtha, heighta)
             self.screen.blit(texta, recta)
-            self.fontb = pygame.font.Font(None, 72)
             textb = self.fontb.render("HIGH SCORES:", 1, (255, 255, 255))
             widthb, heightb = self.fontb.size("HIGH SCORES:")
-            rectb = pygame.Rect(self.screen.get_width() / 2 - widthb / 2, self.screen.get_height() / 20 + heighta, widthb,
+            rectb = pygame.Rect(self.screen.get_width() / 2 - widthb / 2, self.screen.get_height() / 20 +
+                                heighta, widthb,
                                 heightb)
             self.screen.blit(textb, rectb)
             with open('hs.txt'):

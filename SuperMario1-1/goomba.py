@@ -10,9 +10,12 @@ class Goomba(Sprite):
         ss = spritesheet.spritesheet('images/enemies.png')
 
         # Goomba
-        self.goombaleftimage = pygame.transform.scale(ss.image_at((0, 4, 16, 16), colorkey=(146, 39, 143)), (17 * 3, 17 * 3))
-        self.goombarightimage = pygame.transform.scale(ss.image_at((30, 4, 16, 16), colorkey=(146, 39, 143)), (17 * 3, 17 * 3))
-        self.goombasquishimage = pygame.transform.scale(ss.image_at((60, 8, 16, 16), colorkey=(146, 39, 143)), (17 * 3, 17 * 3))
+        self.goombaleftimage = pygame.transform.scale(ss.image_at((0, 4, 16, 16), colorkey=(146, 39, 143)),
+                                                      (17 * 3, 17 * 3))
+        self.goombarightimage = pygame.transform.scale(ss.image_at((30, 4, 16, 16), colorkey=(146, 39, 143)),
+                                                       (17 * 3, 17 * 3))
+        self.goombasquishimage = pygame.transform.scale(ss.image_at((60, 8, 16, 16), colorkey=(146, 39, 143)),
+                                                        (17 * 3, 17 * 3))
         self.image = self.goombaleftimage
         self.rect = self.image.get_rect()
         self.img = 'l'
@@ -73,7 +76,6 @@ class Goomba(Sprite):
                     self.delay -= 1
                     if self.delay <= 0:
                         self.rid = True
-
 
     def blit(self):
         self.screen.blit(self.image, self.rect)

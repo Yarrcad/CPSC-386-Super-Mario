@@ -63,6 +63,7 @@ def check_for_play(startup, mouse_x, mouse_y):
     if button_clicked and startup.menu_active:
         startup.menu_active = False
 
+
 def check_for_hs(startup, mouse_x, mouse_y):
     button_clicked = startup.score_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and startup.menu_active and not startup.hs_active:

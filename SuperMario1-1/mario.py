@@ -82,9 +82,10 @@ class Mario(Sprite):
     def update(self):
         if self.transported:
             self.rect.centerx = 490
-            self.rect.bottom = 167* 3
-            self.transported= False
-        if self.rect.centerx + self.game.maxx >= 3175 * 3 and self.rect.centerx + self.game.maxx < 3391 * 3:
+            self.rect.bottom = 167 * 3
+            self.transported = False
+            self.game.maxx = 2716 * 3
+        if 3175 * 3 <= self.rect.centerx + self.game.maxx < 3391 * 3:
             if self.rect.bottom > 184 * 3:
                 self.rect.centery -= 1
             if self.rect.bottom <= 184 * 3:
@@ -109,14 +110,15 @@ class Mario(Sprite):
                         self.changer = False
                     else:
                         self.image = pygame.transform.scale(self.ssimage, (17 * 3, 17 * 3))
-                        self.changecounter -=1
+                        self.changecounter -= 1
             else:
                 if not self.grounded and self.norm and (self.recent is None or self.recent == 'd'):
                     self.image = pygame.transform.scale(self.jimage, (17 * 3, 17 * 3))
                     self.index = 0
                     self.speed = 4
                 elif not self.grounded and self.norm and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.jimage, (17 * 3, 17 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.jimage, (17 * 3, 17 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo == 0 and self.norm and (self.recent is None or self.recent == 'd'):
@@ -124,12 +126,14 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo == 0 and self.norm and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.simage, (17 * 3, 17 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.simage, (17 * 3, 17 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo > 0 and self.norm:
                     if self.recent == 'a':
-                        self.image = pygame.transform.flip(pygame.transform.scale(self.timage, (17 * 3, 17 * 3)), True, False)
+                        self.image = pygame.transform.flip(pygame.transform.scale(self.timage, (17 * 3, 17 * 3)), True,
+                                                           False)
                     else:
                         self.speed -= 1
                         if self.speed <= 0:
@@ -162,7 +166,8 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif self.ducking and self.superMario and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.sdimage, (17 * 3, 31 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.sdimage, (17 * 3, 31 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif not self.grounded and self.superMario and (self.recent is None or self.recent == 'd'):
@@ -170,7 +175,8 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif not self.grounded and self.superMario and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.sjimage, (17 * 3, 31 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.sjimage, (17 * 3, 31 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo == 0 and self.superMario and (self.recent is None or self.recent == 'd'):
@@ -178,12 +184,14 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo == 0 and self.superMario and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.ssimage, (17 * 3, 31 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.ssimage, (17 * 3, 31 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo > 0 and self.superMario:
                     if self.recent == 'a':
-                        self.image = pygame.transform.flip(pygame.transform.scale(self.stimage, (17 * 3, 31 * 3)), True, False)
+                        self.image = pygame.transform.flip(pygame.transform.scale(self.stimage, (17 * 3, 31 * 3)), True,
+                                                           False)
                     else:
                         self.speed -= 1
                         if self.speed <= 0:
@@ -216,7 +224,8 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif self.ducking and self.fire and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.fdimage, (17 * 3, 31 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.fdimage, (17 * 3, 31 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif not self.grounded and self.fire and (self.recent is None or self.recent == 'd'):
@@ -224,7 +233,8 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif not self.grounded and self.fire and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.fjimage, (17 * 3, 31 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.fjimage, (17 * 3, 31 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo == 0 and self.fire and (self.recent is None or self.recent == 'd'):
@@ -232,12 +242,14 @@ class Mario(Sprite):
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo == 0 and self.fire and self.recent == 'a':
-                    self.image = pygame.transform.flip(pygame.transform.scale(self.fsimage, (17 * 3, 31 * 3)), True, False)
+                    self.image = pygame.transform.flip(pygame.transform.scale(self.fsimage, (17 * 3, 31 * 3)), True,
+                                                       False)
                     self.index = 0
                     self.speed = 4
                 elif self.xvelo > 0 and self.fire:
                     if self.recent == 'a':
-                        self.image = pygame.transform.flip(pygame.transform.scale(self.ftimage, (17 * 3, 31 * 3)), True, False)
+                        self.image = pygame.transform.flip(pygame.transform.scale(self.ftimage, (17 * 3, 31 * 3)), True,
+                                                           False)
                     else:
                         self.speed -= 1
                         if self.speed <= 0:
@@ -292,7 +304,7 @@ class Mario(Sprite):
                 self.audio.effects.play(self.audio.piptrav)
                 self.changer = True
                 self.speed = 4
-            koopa =  pygame.sprite.spritecollideany(self, self.level.koopas)
+            koopa = pygame.sprite.spritecollideany(self, self.level.koopas)
             if koopa and not koopa.squish and self.norm:
                 self.dead = True
             elif koopa and not koopa.squish:
@@ -316,7 +328,7 @@ class Mario(Sprite):
                     self.transported = True
                     self.rect.centerx = 65 * 3
                     self.rect.bottom = 79 * 3
-                    self.game.modx = 2716 *3 - 3391*3
+                    self.game.modx = 2716 * 3 - 3391 * 3
                     self.level.update()
                     self.game.modx = 0
                     self.underground = False
@@ -344,9 +356,9 @@ class Mario(Sprite):
             if solid:
                 if solid.pier and self.ducking:
                     self.audio.effects.play(self.audio.piptrav)
-                    self.rect.centerx = 50*3
-                    self.rect.centery = 34*3
-                    self.game.modx = 3391*3 - self.game.maxx
+                    self.rect.centerx = 50 * 3
+                    self.rect.centery = 34 * 3
+                    self.game.modx = 3391 * 3 - self.game.maxx
                     self.level.update()
                     self.game.modx = 0
                     self.underground = True
@@ -378,7 +390,8 @@ class Mario(Sprite):
             if len(tbricks) > 1:
                 for tbrick in tbricks:
                     if tbrick.active and abs(
-                            self.rect.centerx - tbrick.rect.centerx) <= 8 * 3 and self.rect.centery > tbrick.rect.centery:
+                            self.rect.centerx - tbrick.rect.centerx) <= 8 * 3 and self.rect.centery >\
+                            tbrick.rect.centery:
                         if not self.norm and (tbrick.type == 1 or tbrick.type == 2):
                             tbrick.active = False
                             self.audio.effects.play(self.audio.bsmash)
@@ -490,7 +503,7 @@ class Mario(Sprite):
                 self.game.modx = 0
             if self.rect.bottom > 980:  # death from falling into pits
                 self.dead = True
-            if self.dead and not self. invuln:
+            if self.dead and not self.invuln:
                 self.die()
             elif self.invuln:
                 self.dead = False
@@ -532,4 +545,3 @@ class Mario(Sprite):
             self.rect = self.image.get_rect()
             self.rect.centerx = x
             self.rect.centery = y
-
