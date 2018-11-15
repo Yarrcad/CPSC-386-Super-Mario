@@ -3,6 +3,7 @@ from grouper import Grouper
 from brick import Brick
 from goomba import Goomba
 from koopa import Koopa
+from coin import Coin
 
 
 class Level:
@@ -10,6 +11,7 @@ class Level:
     def __init__(self, screen, solids, bricks, game, scoreboard, coins, muushrooms, fflowers, goombas, koopas, fireballs, audio):
         self.fireballs = fireballs
         self.coins = coins
+        self.coin = Coin
         self.mushrooms = muushrooms
         self.audio = audio
         self.fflowers = fflowers
@@ -68,6 +70,12 @@ class Level:
         self.solids.add(self.grouper((2896 + 16 * 6) * 3, (184 - 16 * 6) * 3, (16 * 3) * 3, 64 * 3))
         self.solids.add(self.grouper((2896 + 16 * 7) * 3, (184 - 16 * 7) * 3, (16 * 2) * 3, 64 * 3))
         self.solids.add(self.grouper(3168 * 3, 184 * 3, 16 * 3, 16 * 3))
+        # Underground
+        self.solids.add(self.grouper(3391 * 3, 24 * 3, 16 * 3, 300 * 3))
+        self.solids.add(self.grouper(3391 * 3, 200 * 3, 300 * 3, 80 * 3))
+        self.solids.add(self.grouper(3456 * 3, 152 * 3, 111 * 3, 300 * 3))
+        self.solids.add(self.grouper(3634 * 3, 0, 111 * 3, 300 * 3))
+        self.solids.add(self.grouper(3600 * 3, 168 * 3, 111 * 3, 300 * 3))
         # Regular Bricks
         self.bricks.add(self.brick(1280 * 3, 72 * 3, 1, self.screen))
         self.bricks.add(self.brick((1280 + 16 * 1) * 3, 72 * 3, 1, self.screen))
@@ -129,6 +137,8 @@ class Level:
         self.goombas.add(self.goomba(self.screen, 2071, 200, self.solids, self.bricks))
         self.goombas.add(self.goomba(self.screen, 2784, 200, self.solids, self.bricks))
         self.goombas.add(self.goomba(self.screen, 2807, 200, self.solids, self.bricks))
+        # Coins
+        self.coins.add(self.coin(self.brick(1248 * 3, 136 * 3, 5, self.screen), 1, 3411, 82))
 
     def blitme(self):
         self.screen.blit(self.background, self.rect)

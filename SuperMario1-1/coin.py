@@ -5,7 +5,7 @@ import spritesheet
 
 class Coin(Sprite):
 
-    def __init__(self, brick, type_):
+    def __init__(self, brick, type_, x=None, y=None):
         super().__init__()
 
         # 1 = static; 2 = brick coin
@@ -22,16 +22,18 @@ class Coin(Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = self.brick.rect.centerx
         self.rect.centery = self.brick.rect.centery
+        if x != None:
+            self.rect.centerx = x
+        if y != None:
+            self.rect.centery = y
 
     def update(self, modx):
         self.icounter -= 1
         if self.icounter <= 0:
             self.index += 1
-            if self.type == 2:
-                if self.index >= len(self.bimages):
-                    self.index = 0
-            if self.type == 2:
-                self.image = pygame.transform.scale(self.bimages[self.index], (16 * 3, 16 * 3))
+            if self.index >= len(self.bimages):
+                self.index = 0
+            self.image = pygame.transform.scale(self.bimages[self.index], (16 * 3, 16 * 3))
             self.icounter = 4
         self.rect.centerx = self.brick.rect.centerx
         if self.type == 2:

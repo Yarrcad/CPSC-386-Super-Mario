@@ -4,7 +4,7 @@ from fireball import Fireball
 
 
 def check_keydown_events(event, mario, audio):
-    if event.key == pygame.K_s and not mario.norm:
+    if event.key == pygame.K_s:
         mario.ducking = True
     if event.key == pygame.K_d:
         mario.recent = 'd'
@@ -20,7 +20,7 @@ def check_keydown_events(event, mario, audio):
 
 
 def check_keyup_events(event, mario):
-    if event.key == pygame.K_s and not mario.norm:
+    if event.key == pygame.K_s:
         mario.ducking = False
 
 
